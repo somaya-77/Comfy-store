@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+  font-family: 'Inter', sans-serif;
+}
+
+}
 @layer components {
   .align-element {
     @apply mx-auto max-w-6xl px-8;
