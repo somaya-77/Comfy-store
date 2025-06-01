@@ -40,8 +40,8 @@ const Login = () => {
   const loginAsGuestUser = async () => {
     try {
       const response = await customFetch.post('/auth/local', {
-        identifier: guestCredentials.email,
-        password: guestCredentials.password,
+        identifier: 'guest@user.com', 
+        password: '12345678',  
       });
       dispatch(loginUser(response.data));
       toast.success('welcome guest user');
@@ -72,13 +72,13 @@ const Login = () => {
         <div className='mt-4'>
           <SubmitBtn text='login' />
         </div>
-        <button
+        {/* <button
           type='button'
           className='btn btn-secondary btn-block'
           onClick={loginAsGuestUser}
         >
           guest user
-        </button>
+        </button> */}
         <p className='text-center'>
           Not a member yet?
           <Link
