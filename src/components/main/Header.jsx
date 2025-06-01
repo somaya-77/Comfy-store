@@ -11,10 +11,11 @@ const Header = () => {
   const user = useSelector((state) => state.userState.user);
 
   const handleLogout = () => {
-    navigate('/');
     dispatch(clearCart());
     dispatch(logoutUser());
     queryClient.removeQueries();
+      navigate('/', { replace: true }); 
+
   };
 
   return (

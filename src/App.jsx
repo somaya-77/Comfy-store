@@ -89,13 +89,13 @@ const router = createBrowserRouter([
     path: '/login',
     element: <Login />,
     errorElement: <Error />,
-    action: loginAction(),
+    action: loginAction(store),
   },
   {
     path: '/register',
     element: <Register />,
     errorElement: <Error />,
-    action: registerAction,
+    action: registerAction(store),
   },
 ]);
 

@@ -2,15 +2,29 @@ import { FormInput, SubmitBtn } from '../components';
 import { Form, Link, redirect } from 'react-router-dom';
 import { customFetch } from '../utils';
 import { toast } from 'react-toastify';
+import { loginUser } from '../features/user/userSlice';
 
-export const action = async ({request}) => {
+export const action = (store) => async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
+  if (!data.username || !data.email || !data.password) {
+    toast.error('All fields are required');
+    return null;
+  }
+  console.log('Form Data:', data);
+
   try {
-    const response = await customFetch.post('/auth/local/register', data);
-    toast.success('account created successfully');
-    return redirect('/login');
+    const response = await customFetch.post('/auth/local/register', {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
+    store.dispatch(loginUser(response.data));
+    // toast.success('account created successfully');
+    toast.info(JSON.stringify(data));
+
+    return redirect('/');
 
   } catch (error) {
     const errorMessage =

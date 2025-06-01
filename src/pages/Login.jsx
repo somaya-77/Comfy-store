@@ -4,6 +4,7 @@ import { customFetch } from '../utils';
 import { toast } from 'react-toastify';
 import { loginUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 export const action =
   (store) =>
@@ -12,7 +13,10 @@ export const action =
     const data = Object.fromEntries(formData);
 
     try {
-      const response = await customFetch.post('/auth/local', data);
+      const response = await customFetch.post('/auth/local', {
+      identifier: data.identifier,
+      password: data.password,
+    });
       store.dispatch(loginUser(response.data));
       toast.success('logged in successfully');
       return redirect('/');
@@ -28,12 +32,16 @@ export const action =
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [guestCredentials, setGuestCredentials] = useState({
+    email: '',
+    password: '',
+  });
 
   const loginAsGuestUser = async () => {
     try {
       const response = await customFetch.post('/auth/local', {
-        identifier: 'test@test.com',
-        password: 'secret',
+        identifier: guestCredentials.email,
+        password: guestCredentials.password,
       });
       dispatch(loginUser(response.data));
       toast.success('welcome guest user');
@@ -51,8 +59,16 @@ const Login = () => {
         className='card w-96  p-8 bg-base-100 shadow-lg flex flex-col gap-y-4'
       >
         <h4 className='text-center text-3xl font-bold'>Login</h4>
-        <FormInput type='email' label='email' name='identifier' />
-        <FormInput type='password' label='password' name='password' />
+        <FormInput type='email' label='email' name='identifier' value={guestCredentials.email}   onChange={(e) =>
+            setGuestCredentials({ ...guestCredentials, email: e.target.value })
+          }/>
+        <FormInput type='password' label='password' name='password'  value={guestCredentials.password}
+          onChange={(e) =>
+            setGuestCredentials({
+              ...guestCredentials,
+              password: e.target.value,
+            })
+          } />
         <div className='mt-4'>
           <SubmitBtn text='login' />
         </div>
