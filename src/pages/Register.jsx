@@ -21,8 +21,8 @@ export const action = (store) => async ({ request }) => {
       password: data.password,
     });
     store.dispatch(loginUser(response.data));
-    // toast.success('account created successfully');
-    toast.info(JSON.stringify(data));
+    toast.success('account created successfully');
+    // toast.info(JSON.stringify(data));
 
     return redirect('/');
 
